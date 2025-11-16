@@ -19,7 +19,7 @@
 struct Data
 {
 	std::string date;
-	float value;
+	double value;
 };
 
 class BitcoinExchange

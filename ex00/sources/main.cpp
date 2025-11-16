@@ -14,14 +14,18 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <iomanip>
 #include "../includes/BitcoinExchange.hpp"
 
 Data	lineProcess(const std::string &line)
 {
 	Data bitcoinExchangeRegister;
 
-	// if (line.empty())
-	// 	return (NULL);
+	bitcoinExchangeRegister.date = "";
+	bitcoinExchangeRegister.value = -1;
+
+	if (line.empty())
+		return (bitcoinExchangeRegister);
 
 	size_t lineSize = line.size();
 	size_t found = line.find(",", 0);
@@ -29,9 +33,11 @@ Data	lineProcess(const std::string &line)
 	if (found != 0)
 	{	
 		bitcoinExchangeRegister.date = line.substr(0, found);
-		// bitcoinExchangeRegister.value = std::stof(line.substr(found + 1, lineSize - found + 1 ));
-		std::stringstream ss(line.substr(found + 1, lineSize - found));
-        ss >> bitcoinExchangeRegister.value;
+		std::stringstream ss(line.substr(found + 1, lineSize - (found + 1)));
+		// std::cout << "lineSize: " << lineSize << "  found: " << found << std::endl;
+		// std::cout << "found + 1: " << found + 1 << "  lineSize - (found + 1): " << lineSize - (found + 1) << std::endl;
+		// std::cout << "ss: " << ss.str() << std::endl;
+		ss >> bitcoinExchangeRegister.value;
 	}
 
 	return (bitcoinExchangeRegister);
@@ -54,15 +60,10 @@ bool	fileProcess(const std::string& inputFileName)
 	while (std::getline(inputFile, line))
 	{
 		bitcoinExchangeRegister = lineProcess(line);
-		bitcoinExchangeData.addRegister(bitcoinExchangeRegister);
+		if (bitcoinExchangeRegister.date != "")
+			bitcoinExchangeData.addRegister(bitcoinExchangeRegister);
 	}
 	bitcoinExchangeData.printBitcoinExchange();
-
-	// bitcoinExchangeRegister.date = "1969-07-13";
-	// bitcoinExchangeRegister.value = 56;
-
-	// bitcoinExchangeData.addRegister(bitcoinExchangeRegister);
-	// bitcoinExchangeData.printBitcoinExchange();
 
 	inputFile.close();
 
@@ -83,6 +84,9 @@ int main(int argc, char** argv)
 		std::cerr << "Error: input file cannot be empty." << std::endl;
 		return (1);
 	}
+
+	std::cout << std::fixed << std::setprecision(2);
+
 	if (!fileProcess(inputFileName))
 	{
 		std::cerr << "Error: file wasn't processed." << std::endl;
