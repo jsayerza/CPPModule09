@@ -1,4 +1,4 @@
-NAME = bitcoin
+NAME = btc
 
 # Compiler
 CXX = c++
@@ -12,7 +12,8 @@ INC =		-I $(INC_PATH)
 HEADERS =	$(INC_PATH)BitcoinExchange.hpp 
 
 SRC_PATH =	./sources/
-SRC =		$(SRC_PATH)main.cpp 
+SRC =		$(SRC_PATH)main.cpp \
+			$(SRC_PATH)BitcoinExchange.cpp 
 
 OBJ_PATH =	./objects/
 OBJ =		$(SRC:$(SRC_PATH)%.cpp=$(OBJ_PATH)%.o)
@@ -55,4 +56,4 @@ re: fclean all
 
 .PHONY: all clean fclean re debug
 
-# valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./bitcoin
+# valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./btc data.csv

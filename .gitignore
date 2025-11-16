@@ -4,7 +4,7 @@
 *.txt
 *.pdf
 *.json
-cpp_09.tgz
+*.csv
 bitcoin
 
 # Prerequisites
