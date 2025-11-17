@@ -15,10 +15,11 @@
 
 # include <vector>
 # include <string>
+# include <ctime>
 
 struct Data
 {
-	std::string date;
+	std::tm date;
 	double value;
 };
 
@@ -35,6 +36,30 @@ class BitcoinExchange
 
 		void addRegister(Data& bitcoinExchangeRegister);
 		void printBitcoinExchange() const;
+
+		double resultBitcoinExchange(Data& bitcoinExchangeRegister);
 };
+
+int compareTm(const std::tm& tm1, const std::tm& tm2);
+
+template <typename T>
+typename T::iterator findLowerClosestDate(T& container, const std::tm& dateToFind)
+{
+	if (container.empty())
+		return container.end();
+	
+	typename T::iterator it = container.end();
+	--it;
+	while (true)
+	{
+		if (compareTm(it->date, dateToFind) <= 0)
+			return (it);
+		if (it == container.begin())
+			break;
+		--it;
+	}
+	
+	return (container.end());
+}
 
 #endif

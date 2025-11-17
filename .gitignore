@@ -1,11 +1,11 @@
 *.swp
 *.swn
 *.swo
-*.txt
+# *.txt
 *.pdf
 *.json
 *.csv
-bitcoin
+btc
 
 # Prerequisites
 *.d

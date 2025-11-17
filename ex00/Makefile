@@ -56,4 +56,4 @@ re: fclean all
 
 .PHONY: all clean fclean re debug
 
-# valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./btc data.csv
+# valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./btc input.txt
