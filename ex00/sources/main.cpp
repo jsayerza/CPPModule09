@@ -36,11 +36,6 @@ std::tm stringToTm(const std::string& dateStr)
 	return (tm);
 }
 
-// void incorrectDate(const std::string& checkedDate)
-// {
-// 	std::cout << "Error: bad date input format => " << checkedDate << std::endl;
-// }
-
 std::string trim(const std::string& str)
 {
 	size_t first = str.find_first_not_of(" \t\n\r");
@@ -81,7 +76,7 @@ std::string checkDate(const std::string& checkedDate)
 	size_t found2 = checkedDate.find("-", found1 + 1);
 	if (found1 != 4 || found2 != 7 || checkedDateSize != 10)
 	{
-		std::cout << "Error: bad date input format => " << checkedDate << std::endl;
+		std::cerr << "Error: bad date input format => " << checkedDate << std::endl;
 		return ("");
 	}
 	
@@ -90,7 +85,7 @@ std::string checkDate(const std::string& checkedDate)
 	std::string dayStr = checkedDate.substr(8, 2);
 	if (!isNumber(yearStr) || !isNumber(monthStr) || !isNumber(dayStr))
 	{
-		std::cout << "Error: bad date input format => " << checkedDate << std::endl;
+		std::cerr << "Error: bad date input format => " << checkedDate << std::endl;
 		return ("");
 	}
 
@@ -99,7 +94,7 @@ std::string checkDate(const std::string& checkedDate)
 	int day = stringToInt(dayStr);
 	if (year < 2000 || year > 2050 || month < 1 || month > 12 || day < 1 || day > 31)
 	{
-		std::cout << "Error: bad date input format => " << checkedDate << std::endl;
+		std::cerr << "Error: bad date input format => " << checkedDate << std::endl;
 		return ("");
 	}
 
@@ -113,24 +108,24 @@ double checkValue(const std::string& toCheckValue)
 	ss >> checkedValue;
 	if (ss.fail())
 	{
-		std::cout << "Error: bad value input => " << toCheckValue << std::endl;
+		std::cerr << "Error: bad value input => " << toCheckValue << std::endl;
 		return (-1);
 	}
 	std::string remaining;
 	ss >> remaining;
 	if (!remaining.empty())
 	{
-		std::cout << "Error: bad value input => " << toCheckValue << std::endl;
+		std::cerr << "Error: bad value input => " << toCheckValue << std::endl;
 		return (-1);
 	}
 	if (checkedValue < 0)
 	{
-		std::cout << "Error: not a positive number." << std::endl;
+		std::cerr << "Error: not a positive number." << std::endl;
 		return (-1);
 	}
 	else if (checkedValue > 1000)
 	{
-		std::cout << "Error: too large a number." << std::endl;
+		std::cerr << "Error: too large a number." << std::endl;
 		return (-1);
 	}
 	
@@ -153,7 +148,7 @@ Data	lineProcess(const std::string &line)
 
 	if (found == std::string::npos)
 	{
-		std::cout << "Error: bad input => " << line << std::endl;
+		std::cerr << "Error: bad input => " << line << std::endl;
 		return (bitcoinExchangeRegister);
 	}
 	
@@ -252,7 +247,7 @@ int main(int argc, char** argv)
 {
 	if (argc != 2)
 	{
-		std::cout << "Error: could not open file" << std::endl;
+		std::cerr << "Error: could not open file" << std::endl;
 		return (1);
 	}
 
