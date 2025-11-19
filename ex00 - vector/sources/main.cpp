@@ -21,6 +21,21 @@
 #include <cstring>
 #include "../includes/BitcoinExchange.hpp"
 
+std::tm stringToTm(const std::string& dateStr)
+{
+	std::tm tm;
+	std::memset(&tm, 0, sizeof(tm));
+	
+	std::stringstream ss(dateStr);
+	char dash;
+	ss >> tm.tm_year >> dash >> tm.tm_mon >> dash >> tm.tm_mday;
+	
+	tm.tm_year -= 1900;
+	tm.tm_mon -= 1;
+	
+	return (tm);
+}
+
 std::string trim(const std::string& str)
 {
 	size_t first = str.find_first_not_of(" \t\n\r");
@@ -121,7 +136,8 @@ Data	lineProcess(const std::string &line)
 {
 	Data bitcoinExchangeRegister;
 
-	bitcoinExchangeRegister.date = "";
+	std::memset(&bitcoinExchangeRegister.date, 0, sizeof(std::tm));
+	bitcoinExchangeRegister.date.tm_year = -1;
 	bitcoinExchangeRegister.value = -1;
 
 	if (line.empty())
@@ -138,7 +154,7 @@ Data	lineProcess(const std::string &line)
 	
 	std::string checkedDate = checkDate(trim(line.substr(0, found)));
 	if (checkedDate != "")
-		bitcoinExchangeRegister.date = checkedDate;
+		bitcoinExchangeRegister.date = stringToTm(checkedDate);
 
 	double checkedValue = checkValue(line.substr(found + 1, lineSize - (found + 1)));
 	if (checkedValue != -1)
@@ -162,16 +178,13 @@ bool	inputFileProcess(const std::string& inputFileName, BitcoinExchange& bitcoin
 	while (std::getline(inputFile, line))
 	{
 		bitcoinExchangeRegister = lineProcess(line);
-		if (bitcoinExchangeRegister.date != "" && bitcoinExchangeRegister.value != -1)
+		if (bitcoinExchangeRegister.date.tm_year != -1 && bitcoinExchangeRegister.value != -1)
 		{
-			std::cout << bitcoinExchangeRegister.date << " >> ";
-			std::cout << bitcoinExchangeRegister.value;
-
-			double result = bitcoinExchangeData.resultBitcoinExchange(bitcoinExchangeRegister);
-			if (result != -1)
-				std::cout << " = " << result;
-			else
-				std::cerr << " => Error: date not in database range.";
+			char buffer[11];  // YYYY-MM-DD + '\0'
+			std::strftime(buffer, sizeof(buffer), "%Y-%m-%d", &bitcoinExchangeRegister.date);
+			std::cout << buffer<< "=> ";
+			std::cout << bitcoinExchangeRegister.value << " = ";
+			std::cout << bitcoinExchangeData.resultBitcoinExchange(bitcoinExchangeRegister);
 			std::cout << std::endl;
 		}	
 	}
@@ -185,7 +198,8 @@ Data	dataBaseLineProcess(const std::string &line)
 {
 	Data bitcoinExchangeRegister;
 
-	bitcoinExchangeRegister.date = "";
+	std::memset(&bitcoinExchangeRegister.date, 0, sizeof(std::tm));
+	bitcoinExchangeRegister.date.tm_year = -1;
 	bitcoinExchangeRegister.value = -1;
 
 	if (line.empty())
@@ -196,13 +210,14 @@ Data	dataBaseLineProcess(const std::string &line)
 
 	if (found != std::string::npos)
 	{	
-		bitcoinExchangeRegister.date = line.substr(0, found);
+		bitcoinExchangeRegister.date = stringToTm(line.substr(0, found));
 		std::stringstream ss(line.substr(found + 1, lineSize - (found + 1)));
 		ss >> bitcoinExchangeRegister.value;
 	}
 
 	return (bitcoinExchangeRegister);
 }
+
 
 bool	dataBaseFileProcess(const std::string& inputFileName, BitcoinExchange& bitcoinExchangeData)
 {
@@ -219,7 +234,7 @@ bool	dataBaseFileProcess(const std::string& inputFileName, BitcoinExchange& bitc
 	while (std::getline(inputFile, line))
 	{
 		bitcoinExchangeRegister = dataBaseLineProcess(line);
-		if (bitcoinExchangeRegister.date != "")
+		if (bitcoinExchangeRegister.date.tm_year != -1)
 			bitcoinExchangeData.addRegister(bitcoinExchangeRegister);
 	}
 
