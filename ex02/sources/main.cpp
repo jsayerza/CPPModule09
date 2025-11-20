@@ -14,6 +14,7 @@
 #include <string>
 #include <stdlib.h>
 #include <algorithm>
+#include <vector>
 #include <deque>
 #include <iterator>
 #include "../includes/PmergeMe.hpp"
@@ -116,8 +117,45 @@ int main(int argc, char** argv)
 		return (1);
 	printContainer(sequence);
 
-	// double getElapsedTime(clock_t start, clock_t end);
-	isSorted(sequence);
+    std::vector<int> vec;
+    std::deque<int> deq;
+    
+    for (int i = 1; i < argc; ++i)
+    {
+        int num = std::atoi(argv[i]);
+        vec.push_back(num);
+        deq.push_back(num);
+    }
+    
+    std::cout << "Before: ";
+    printContainer(vec);
+    
+    clock_t start = clock();
+    PmergeMe::sortVector(vec);
+    clock_t end = clock();
+    double timeVec = (double)(end - start) / CLOCKS_PER_SEC * 1000000;
+    
+    // start = clock();
+    // PmergeMe::sortDeque(deq);
+    // end = clock();
+    // double timeDeq = (double)(end - start) / CLOCKS_PER_SEC * 1000000;
+    
+    std::cout << "After:  ";
+    printContainer(vec);
+    
+    std::cout << "Time to process with std::vector: " << timeVec << " us" << std::endl;
+    // std::cout << "Time to process with std::deque: " << timeDeq << " us" << std::endl;
+	
+	// isSorted(sequence);
 
 	return (0);
 }
+
+
+// Resumen del algoritmo Ford-Johnson (Merge-Insert):
+// 1 Emparejar → Dividir en pares y ordenar cada par
+// 2 Ordenar recursivamente → Ordenar los elementos mayores
+// 3 Construir cadena principal → Primer menor + mayores ordenados
+// 4 Insertar con Jacobsthal → Insertar menores restantes en orden óptimo
+// 5 Insertar straggler → Añadir elemento impar si existe
+// Este algoritmo minimiza comparaciones usando la secuencia de Jacobsthal para determinar el orden óptimo de inserción.

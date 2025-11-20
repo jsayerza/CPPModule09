@@ -22,3 +22,9 @@ PmergeMe& PmergeMe::operator=(const PmergeMe& other)
 	return (*this);
 }
 PmergeMe::~PmergeMe() {}
+
+
+void PmergeMe::sortVector(std::vector<int> vec)
+{
+
+}
