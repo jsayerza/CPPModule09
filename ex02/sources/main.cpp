@@ -19,15 +19,15 @@
 #include <iterator>
 #include "../includes/PmergeMe.hpp"
 
-template <typename Container>
-void printContainer(const Container& container)
-{
-	for (typename Container::const_iterator it = container.begin(); it != container.end(); ++it)
-	{
-		std::cout << *it << " ";
-	}
-	std::cout << std::endl;
-}
+// template <typename Container>
+// void printContainer(const Container& container)
+// {
+// 	for (typename Container::const_iterator it = container.begin(); it != container.end(); ++it)
+// 	{
+// 		std::cout << *it << " ";
+// 	}
+// 	std::cout << std::endl;
+// }
 
 template <typename Container>
 bool isSorted(const Container& container)
@@ -115,7 +115,7 @@ int main(int argc, char** argv)
 	std::deque<int> sequence;
 	if (!validateSequence(argc, argv, sequence))
 		return (1);
-	printContainer(sequence);
+	// printContainer(sequence);
 
     std::vector<int> vec;
     std::deque<int> deq;
@@ -130,8 +130,9 @@ int main(int argc, char** argv)
     std::cout << "Before: ";
     printContainer(vec);
     
+	PmergeMe pmVec;
     clock_t start = clock();
-    PmergeMe::sortVector(vec);
+	pmVec.sortVector(vec);
     clock_t end = clock();
     double timeVec = (double)(end - start) / CLOCKS_PER_SEC * 1000000;
     
