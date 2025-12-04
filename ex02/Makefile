@@ -59,3 +59,4 @@ re: fclean all
 # valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./PmergeMe 5 3 1 2 4 
 # valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./PmergeMe `shuf -i 1-100 -n 10 | tr "\n" " "`
 # ./PmergeMe 25 10 50 75 35 15 5
+# ./PmergeMe 25 10 35 40 30 15 5

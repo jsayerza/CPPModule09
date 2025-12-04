@@ -82,7 +82,5 @@ bool RPN::operate(const char& operatorRPN)
 		break;
 	}
 
-	op2 = _container.top();
-
 	return (true);
 }
